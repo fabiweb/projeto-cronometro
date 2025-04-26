@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cronômetro</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+    }
+
+    .container {
+      border: 4px solid #333;
+      padding: 100px;
+      background-color: rgb(41, 224, 50);
+      border-radius: 70px;
+      box-shadow: 0 4px 12px rgba(7, 219, 42, 0.2);
+    }
+
+    .cronometro {
+      text-align: center;
+    }
+
+    #display {
+      font-size: 48px;
+      font-family: 'Courier New', Courier, monospace;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 0 5px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background-color 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="cronometro">
+      <h1 id="display">00:00:00</h1>
+      <button id="iniciar">Iniciar</button>
+      <button id="pausar">Pausar</button>
+      <button id="resetar">Resetar</button>
+    </div>
+  </div>
+
+  <script>
+    let horas = 0;
+    let minutos = 0;
+    let segundos = 0;
+    let interval;
+
+    function atualizarDisplay() {
+      const display = document.getElementById('display');
+      const h = horas.toString().padStart(2, '0');
+      const m = minutos.toString().padStart(2, '0');
+      const s = segundos.toString().padStart(2, '0');
+      display.textContent = `${h}:${m}:${s}`;
+    }
+
+    function cronometro() {
+      segundos++;
+      if (segundos === 60) {
+        segundos = 0;
+        minutos++;
+        if (minutos === 60) {
+          minutos = 0;
+          horas++;
+        }
+      }
+      atualizarDisplay();
+    }
+
+    document.getElementById('iniciar').addEventListener('click', () => {
+      clearInterval(interval);
+      interval = setInterval(cronometro, 1000);
+    });
+
+    document.getElementById('pausar').addEventListener('click', () => {
+      clearInterval(interval);
+    });
+
+    document.getElementById('resetar').addEventListener('click', () => {
+      clearInterval(interval);
+      horas = 0;
+      minutos = 0;
+      segundos = 0;
+      atualizarDisplay();
+    });
+
+    atualizarDisplay();
+
+
+    const botoes = document.querySelectorAll('button');
+const cores = ['#9c27b0', '#9c27b0', '#9c27b0', '#9c27b0', '#9c27b0'];
+
+botoes.forEach(botao => {
+  let corAtual = 0;
+
+  botao.addEventListener('click', () => {
+    botao.style.backgroundColor = cores[corAtual];
+    corAtual = (corAtual + 1) % cores.length;
+  });
+});
+
+  </script>
+</body>
+</html>
+
